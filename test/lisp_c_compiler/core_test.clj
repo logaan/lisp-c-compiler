@@ -6,5 +6,10 @@
       => '[[+ 1 1]] )
 
 (fact (parse-expression "1(+ 1 (+ 1 1))")
-      => '[1[+ 1 [+ 1 1]]] )
+      => '[1 [+ 1 [+ 1 1]]] )
+
+(fact (parse-expression "(p 1)")
+      => '[[print 1]] )
+
+(c-boilerplate "printResult((1 + 1))")
 

@@ -16,6 +16,7 @@
   (condp match c
     \space []
     \+     ['+]
+    \p     ['print]
     #"\d"  [(Integer/parseInt (str c))]))
 
 (defn parse-expression
@@ -26,4 +27,11 @@
      \( (conj accumulator (parse-expression [] tail))
      \) accumulator
      (recur (vec (concat accumulator (parse-char head))) tail))))
+
+(defn c-boilerplate [content]
+  (str "#include<stdio.h>\n"
+       "void printResult(int result) { printf(\"%i\\n\", result); }"
+       "int main() {"
+         content
+       " return 0; }"))
 
