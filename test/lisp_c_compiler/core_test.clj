@@ -28,3 +28,5 @@
 
 (fact (compile-ast '[print [+ 1 1]])
       => "printResult((1+1))")
+
+(compile-string "(p (+ 1 1 (+ 2 2)))")
