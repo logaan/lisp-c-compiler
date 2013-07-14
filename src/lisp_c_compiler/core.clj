@@ -1,4 +1,5 @@
-(ns lisp-c-compiler.core)
+(ns lisp-c-compiler.core
+  (:require [clojure.string :as str]))
 
 (defprotocol Match
   (match [self value]))
@@ -34,4 +35,23 @@
        "int main() {"
          content
        " return 0; }"))
+
+(defn function-call? [form]
+  (and (coll? form) (symbol? (first form))))
+
+(defn list-of-expressions? [form]
+  (and (coll? form) (not (function-call? form))))
+
+(def builtins
+  {'print (fn [contents]
+            (str "printResult(" (str/join contents) ")"))
+   '+     (fn [contents]
+            (str "(" (str/join "+" contents) ")"))})
+
+(defn compile-ast [ast]
+  (cond
+    (list-of-expressions? ast) (map compile-ast ast)
+    (function-call? ast) ((builtins (first ast)) (compile-ast (rest ast)))
+    (number? ast) (str ast)))
+
 

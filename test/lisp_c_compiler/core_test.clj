@@ -11,5 +11,20 @@
 (fact (parse-expression "(p 1)")
       => '[[print 1]] )
 
-(c-boilerplate "printResult((1 + 1))")
+(fact (method-call? '[+ 1 1])
+      => true)
 
+(fact (list-of-expressions? '[[+ 1 1] 1])
+      => true)
+
+(fact (compile-ast [])
+      => [])
+
+(fact ((builtins 'print) ["(1 + 1)"])
+      => "printResult((1 + 1))")
+
+(fact (compile-ast '[print 1])
+      => "printResult(1)")
+
+(fact (compile-ast '[print [+ 1 1]])
+      => "printResult((1+1))")
