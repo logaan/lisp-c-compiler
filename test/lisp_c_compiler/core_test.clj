@@ -1,7 +1,10 @@
 (ns lisp-c-compiler.core-test
-  (:use clojure.test
+  (:use midje.sweet
         lisp-c-compiler.core))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+(fact (parse-expression "(+ 1 1)")
+      => '[[+ 1 1]] )
+
+(fact (parse-expression "1(+ 1 (+ 1 1))")
+      => '[1[+ 1 [+ 1 1]]] )
+
