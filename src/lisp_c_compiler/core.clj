@@ -29,12 +29,12 @@
      \) accumulator
      (recur (vec (concat accumulator (parse-char head))) tail))))
 
-(defn c-boilerplate [content]
+(defn c-boilerplate [contents]
   (str "#include<stdio.h>\n"
        "void printResult(int result) { printf(\"%i\\n\", result); }"
        "int main() {"
-         content
-       " return 0; }"))
+       (str/join ";" contents)
+       "; return 0; }"))
 
 (defn function-call? [form]
   (and (coll? form) (symbol? (first form))))
@@ -54,4 +54,6 @@
     (function-call? ast) ((builtins (first ast)) (compile-ast (rest ast)))
     (number? ast) (str ast)))
 
+(defn compile-string [string]
+  (c-boilerplate (compile-ast (parse-expression string))))
 
